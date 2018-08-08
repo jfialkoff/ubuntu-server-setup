@@ -1,8 +1,15 @@
 Notice to All Users (Authorized or Unauthorized).
-^[[1
-This computer system is for authorized use only. Users have no explicit or implicit expectation of privacy.*
+
+This computer system is for authorized use only. Users have no explicit or
+implicit expectation of privacy.
 
 
-^[[0
-Any or all uses of this system and all data on this system may be intercepted, monitored, recorded, copied, audited, inspected, and disclosed to authorized sites and law enforcement personnel, as well as authorized officials of other agencies. By using this system, the user consent to such disclosure at the discretion of authorized site personnel. Unauthorized or improper use of this system may result in administrative disciplinary action, civil and criminal penalties. By continuing to use this system you indicate your awareness of and consent to these terms and conditions of use. STOP IMMEDIATELY!!! if you do not agree to the conditions stated in this warning.
-
+Any or all uses of this system and all data on this system may be intercepted,
+monitored, recorded, copied, audited, inspected, and disclosed to authorized
+sites and law enforcement personnel, as well as authorized officials of other
+agencies. By using this system, the user consent to such disclosure at the
+discretion of authorized site personnel. Unauthorized or improper use of this
+system may result in administrative disciplinary action, civil and criminal
+penalties. By continuing to use this system you indicate your awareness of and
+consent to these terms and conditions of use. STOP IMMEDIATELY!!! if you do not
+agree to the conditions stated in this warning.
