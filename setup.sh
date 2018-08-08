@@ -36,6 +36,8 @@ function main() {
     addSSHKey "${username}" "${sshKey}"
     changeSSHConfig
     setupUfw
+    secureSharedMem
+    addSecurityBanner
 
     if ! hasSwap; then
         setupSwap
@@ -73,7 +75,7 @@ function cleanup() {
 function logTimestamp() {
     local filename=${1}
     {
-        echo "===================" 
+        echo "==================="
         echo "Log generated on $(date)"
         echo "==================="
     } >>"${filename}" 2>&1
@@ -83,7 +85,7 @@ function setupTimezone() {
     echo -ne "Enter the timezone for the server (Default is 'Asia/Singapore'):\n" >&3
     read -r timezone
     if [ -z "${timezone}" ]; then
-        timezone="Asia/Singapore"
+        timezone="America/New_York"
     fi
     setTimezone "${timezone}"
     echo "Timezone is set to $(cat /etc/timezone)" >&3
@@ -103,7 +105,7 @@ function promptForPassword() {
        else
            PASSWORDS_MATCH=1
        fi
-   done 
+   done
 }
 
 main

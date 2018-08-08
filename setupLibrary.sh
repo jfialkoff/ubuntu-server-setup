@@ -57,6 +57,13 @@ function setupUfw() {
     yes y | sudo ufw enable
 }
 
+# Secure shared memory
+function secureSharedMem() {
+	local fn='/etc/fstab'
+    local cmd='tmpfs /run/shm tmpfs defaults,noexec,nosuid 0 0'
+	grep -q -F "${cmd}" ${fn} || echo "${cmd}" >> ${fn}
+}
+
 # Create the swap file based on amount of physical memory on machine (Maximum size of swap is 4GB)
 function createSwap() {
    local swapmem=$(($(getPhysicalMemory) * 2))
@@ -76,6 +83,44 @@ function createSwap() {
 function mountSwap() {
     sudo cp /etc/fstab /etc/fstab.bak
     echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+}
+
+# Comment out a line in an existing file
+# Arguments:
+#	Filename
+#	Line to look for and comment out.
+function commentLine() {
+	local fn=${1}
+	local line=$(escape "$2")
+	#echo ${line}
+	#echo "s/^${line}/# ${line}/"
+	sudo sed -re "s/^(${line})/# \1/" -i ${fn}
+}
+
+# Escape special characters for a passed in string.
+# Arguments:
+# 	String to escape
+function escape() {
+	local str=${1}
+	str=${str//\"/\\\"}
+	str=${str//\'/\\\'}
+	str=${str//\//\\\/}
+	echo $str
+}
+
+# Add security banner
+function addSecurityBanner() {
+	sudo cp securityBanner.txt /etc/issue.net
+	local fn="/etc/pam.d/sshd"
+	cp ${fn} ${fn}.bak
+	commentLine ${fn} 'session\s+optional\s+pam_motd.so\s+motd=/run/motd.dynamic'
+	commentLine ${fn} 'session\s+optional\s+pam_motd.so\s+noupdate'
+
+	local fn="/etc/ssh/sshd_config"
+	cp ${fn} ${fn}.bak
+	commentLine ${fn} 'Banner\s+/etc/issue.net'
+
+	sudo service ssh restart
 }
 
 # Modify the swapfile settings
@@ -122,7 +167,7 @@ function configureNTP() {
 function getPhysicalMemory() {
     local phymem
     phymem="$(free -g|awk '/^Mem:/{print $2}')"
-    
+
     if [[ ${phymem} == '0' ]]; then
         echo 1
     else
