@@ -90,11 +90,21 @@ function mountSwap() {
 #	Filename
 #	Line to look for and comment out.
 function commentLine() {
+    local fn=${1}
+    local line=$(escape "$2")
+    echo $line
+    sudo sed -re "s/^(${line})/# \1/" -i ${fn}
+}
+
+# Uncomment a line in a file
+# Arguments:
+#	Filename
+#	Line to uncomment
+function uncommentLine() {
 	local fn=${1}
 	local line=$(escape "$2")
-	#echo ${line}
-	#echo "s/^${line}/# ${line}/"
-	sudo sed -re "s/^(${line})/# \1/" -i ${fn}
+    echo $line
+    sudo sed -re "s/^(\#\s*)?(${line})/\2/" -i ${fn}
 }
 
 # Escape special characters for a passed in string.
@@ -103,7 +113,6 @@ function commentLine() {
 function escape() {
 	local str=${1}
 	str=${str//\"/\\\"}
-	str=${str//\'/\\\'}
 	str=${str//\//\\\/}
 	echo $str
 }
@@ -118,7 +127,7 @@ function addSecurityBanner() {
 
 	local fn="/etc/ssh/sshd_config"
 	cp ${fn} ${fn}.bak
-	commentLine ${fn} 'Banner\s+/etc/issue.net'
+	uncommentLine ${fn} 'Banner\s+/etc/issue.net'
 
 	sudo service ssh restart
 }
